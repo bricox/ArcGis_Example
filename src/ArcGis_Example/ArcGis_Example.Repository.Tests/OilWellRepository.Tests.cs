@@ -8,13 +8,14 @@ namespace ArcGis_Example.Repository.Tests
     {
 
         private IOilWellRepository repository;
-        private string wellLocationData;
-
+        
         [TestInitialize]
         public void Setup()
         {
-            wellLocationData =  @"exceptional_tn_streams.csv";
-            repository = new OilWellRepository(wellLocationData);
+
+            var wellLocationData =  @"exceptional_tn_streams.csv";
+            var wellProductionData = @"WellProductionExample.csv";
+            repository = new OilWellRepository(wellLocationData, wellProductionData);
             
     }
 
@@ -30,6 +31,17 @@ namespace ArcGis_Example.Repository.Tests
             var results = repository.Get();
 
             Assert.AreEqual(16042, results.Count);
+        }
+
+        [TestMethod]
+        public void CanIRetrieveTheWellProductionData()
+        {
+            var wellId = "1245";
+            var results = repository.GetWellProductionInformation(wellId);
+
+            Assert.IsNotNull(results);
+            Assert.AreEqual(24, results.Count);
+            Assert.AreEqual(12, results[0].Quantity.Count);
         }
 
         [TestMethod]

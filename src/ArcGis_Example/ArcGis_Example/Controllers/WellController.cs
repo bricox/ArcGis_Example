@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ArcGis_Example.ViewModels;
+using ArcGis_Example.Filters;
 
 namespace ArcGis_Example.Controllers
 {
@@ -17,10 +18,11 @@ namespace ArcGis_Example.Controllers
         public WellController()
         {
             var wellDataFilePath = System.Web.HttpContext.Current.Request.MapPath(@"~/exceptional_tn_streams.csv");
-            wellRepository = new OilWellRepository(wellDataFilePath);
+            var wellProductionFilePath = System.Web.HttpContext.Current.Request.MapPath(@"~/WellProductionExample.csv");
+            wellRepository = new OilWellRepository(wellDataFilePath, wellProductionFilePath);
         }
 
-        [Filters.ExceptionFilter]
+        [ExceptionFilter]
         public IHttpActionResult Get()
         {
             var wells = wellRepository.Get();
@@ -33,6 +35,12 @@ namespace ArcGis_Example.Controllers
             }).ToList();
 
             return Ok(wellViewModels);
+        }
+
+        [ExceptionFilter]
+        public IHttpActionResult Get(string id)
+        {
+            return Ok(wellRepository.GetWellProductionInformation(id));
         }
     }
 }
