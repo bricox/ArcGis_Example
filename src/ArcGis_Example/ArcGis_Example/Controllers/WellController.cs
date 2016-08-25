@@ -27,10 +27,10 @@ namespace ArcGis_Example.Controllers
         {
             var wells = wellRepository.Get();
 
-            var wellViewModels = wells.Select(p => new ArcGisLocation
+            var wellViewModels = wells.Where(p=>p.Latitude != null && p.Longitude != null).Select(p => new ArcGisLocation
             {
-                x = p.Latitude,
-                y = p.Longitude,
+                y = p.Latitude,
+                x = p.Longitude,
                 SpatialReference = new SpatialReference { Wkid = "4326" }
             }).ToList();
 
