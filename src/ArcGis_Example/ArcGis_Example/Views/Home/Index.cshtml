@@ -2,6 +2,10 @@
     <div id="mapView" class="row col-xs-12"></div>
 </div>
 
+<div data-dojo-type="dijit/Dialog" id="test" title="Name and Address">
+    Testing.
+</div>
+
 <script>
     require([
       "esri/Map",
@@ -12,9 +16,13 @@
       "dojo/_base/array",
       "dojo/request",
       "dojo/json",
+      "dijit/Dialog",
+      "dojo/dom",
       "dojo/domReady!"
-    ], function (Map, MapView, Graphic, Point, SimpleMarkerSymbol, array, request, json) {
-        
+    ], function (Map, MapView, Graphic, Point, SimpleMarkerSymbol, array, request, json, Dialog, dom) {
+        var self = this;
+        self.dom = dom;
+
         var wellLocatonUrl = "/api/well";
         var wellProductionUrl = "/api/well";
         var productionInformation;
@@ -49,7 +57,10 @@
             this.hitTest(evt.screenPoint).then(function (response) {
                 request.get(wellProductionUrl + "/test", { handleAs: "json"})
                     .then(function (response) {
-                        productionInformation = response;                        
+                        productionInformation = response;
+                        debugger;
+                        
+                        dijit.byId("dialogOne").show();
                     });
 
                 var graphics = response.results;

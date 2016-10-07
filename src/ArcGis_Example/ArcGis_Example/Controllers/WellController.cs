@@ -33,7 +33,7 @@ namespace ArcGis_Example.Controllers
                     y = p.Latitude,
                     x = p.Longitude,
                     SpatialReference = new SpatialReference { Wkid = "4326" }
-                }).ToList();
+                }).Take(100).ToList();
 
             return Ok(wellViewModels);
         }
